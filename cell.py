@@ -39,7 +39,7 @@ class Cell:
         color = "gray" if undo else "red"
         
         # Create the line object
-        line = Line(start, end, fill_color=color)
+        line = Line(start, end, color)
         
         # Draw the line
         self._win.draw_line(line)
