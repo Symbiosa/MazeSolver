@@ -148,25 +148,25 @@ class Maze:
         print(f"Undoing move from ({ni}, {nj}) to ({i}, {j})")
                 
     def _solve_r(self, i, j):
-    self._cells[i][j].visited = True
-    self._animate()
+        self._cells[i][j].visited = True
+        self._animate()
     
     # Check if the current cell is the end cell
-    if (i, j) == (self._end_cell_i, self._end_cell_j):
-        return True
+        if (i, j) == (self._end_cell_i, self._end_cell_j):
+            return True
 
     # Possible directions to move: right, down, left, up
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
     
-    for di, dj in directions:
-        ni, nj = i + di, j + dj
+        for di, dj in directions:
+            ni, nj = i + di, j + dj
         
         # Check if the next cell is within bounds and not visited, and no wall blocks the path.
-        if 0 <= ni < len(self._cells) and 0 <= nj < len(self._cells[0]) and not self._cells[ni][nj].visited:
+            if 0 <= ni < len(self._cells) and 0 <= nj < len(self._cells[0]) and not self._cells[ni][nj].visited:
             # Assume you have a method `can_move` to check if there's no wall blocking.
-            if self.can_move(i, j, ni, nj):
+                if self.can_move(i, j, ni, nj):
                 # Draw move (this method should graphically/procedurally show the move)
-                self.draw_move(i, j, ni, nj)
+                    self.draw_move(i, j, ni, nj)
                 
                 # Recursively solve from the new cell
                 if self._solve_r(ni, nj):
@@ -176,4 +176,4 @@ class Maze:
                 self.draw_undo_move(i, j, ni, nj)
 
     # None of the directions worked out, return False
-    return False
+        return False
