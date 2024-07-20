@@ -59,6 +59,7 @@ class Maze:
         if i < 0 or i >= self.num_rows or j < 0 or j >= self.num_cols:
             print(f"Out of bounds: ({i}, {j})")  # Debug statement
             return
+        
         while True:
             possible_directions = []
             
@@ -83,5 +84,14 @@ class Maze:
             elif next_i == i+1:
                 current.has_bottom_wall = False
                 self._cells[next_i][next_j].has_top_wall = False
-
+            elif next_j == j-1:
+                current.has_left_wall = False
+                self._cells[next_i][next_j].has_right_wall = False
+            elif next_j == j+1:
+                current.has_right_wall = False
+                self._cells[next_i][next_j].has_left_wall = False
+            
+            self._draw_cell(current)
+            self._draw_cell(self._cells[next_i][next_j])
+                
             self._break_walls_r(next_i, next_j)

@@ -36,7 +36,7 @@ def main():
     win = Window(800,600)
     num_rows, num_cols = 20,20
     
-    maze =Maze(win, num_rows, num_cols, padding = 20, seed = 202)
+    maze = Maze(win, num_rows, num_cols, padding = 20, seed = 202)
     maze.start_maze()
     win.wait_for_close()
 
