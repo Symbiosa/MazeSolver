@@ -116,3 +116,44 @@ class Maze:
         for row in range(self._num_rows):
             for col in range(self._num_cols):
                 self._cells[row][col].visited = False
+        
+    def solve(self):
+        start_i, start_j = 0, 0
+        end_i, end_j = len(self._cells - 1), len(self._cells[0] -1)
+        
+        self._end_cell_i = end_i
+        self._end_cell_j = end_j
+        
+        return self._solve_r(start_i, start_j)  
+    
+    def draw_move(self, i, j, ni, nj):
+    # Imagine some logic to draw or log the move from (i, j) to (ni, nj)
+        print(f"Moving from ({i}, {j}) to ({ni}, {nj})")
+
+    def draw_undo_move(self, i, j, ni, nj):
+    # Imagine some logic to draw or log the undo move
+        print(f"Undoing move from ({ni}, {nj}) to ({i}, {j})")
+                
+    def _solve_r(self,i,j):
+        self._cells[i][j].visited = True
+        self._animate()
+        if (i, j) == (self._end_cell_i, self._end_cell_j):
+            return True
+        
+        directions = [(0,1), (1,0), (0,-1), (-1,0)]
+        
+        for di, dj in directions:
+            ni, nj = i + di, j+ dj
+        
+            if 0 <= ni < len(self._cells) and 0 <= nj < len(self._cells[0]) and not self._cells[ni]:
+                
+                if self.can_move(i, j, ni, nj):
+                    
+                    self.draw_move(i, j, ni, nj)
+                    
+                    if self._solve_r(ni, nj):
+                        return True
+                    
+                    self.draw_undo_move(i, j, ni, nj)        
+                
+        return False
