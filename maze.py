@@ -150,7 +150,7 @@ class Maze:
     def _solve_r(self, i, j):
         self._cells[i][j].visited = True
         self._animate()
-    
+        print('we made it to the solve_r')
     # Check if the current cell is the end cell
         if (i, j) == (self._end_cell_i, self._end_cell_j):
             return True
