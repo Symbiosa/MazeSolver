@@ -11,38 +11,12 @@ class Cell:
         self.x2 = x2
         self.y1 = y1
         self.y2 = y2
+        self.visited = False
 
     def draw(self, win):
-        # if win is None:
-        #     return
         wall_color = "black"
         background_color = "white"
         
-        # # Helper function to draw lines with specified color
-        # def draw_line_with_color(win, start, end, color):
-        #     win.set_pen_color(color)    # Assume such method exists
-        #     win.draw_line(start, end)
-        
-        # # Draw left wall
-        # start, end = Point(self.x1, self.y1), Point(self.x1, self.y2)
-        # color = wall_color if self.has_left_wall else background_color
-        # draw_line_with_color(win, start, end, color)
-        
-        # # Draw top wall
-        # start, end = Point(self.x1, self.y1), Point(self.x2, self.y1)
-        # color = wall_color if self.has_top_wall else background_color
-        # draw_line_with_color(win, start, end, color)
-        
-        # # Draw right wall
-        # start, end = Point(self.x2, self.y1), Point(self.x2, self.y2)
-        # color = wall_color if self.has_right_wall else background_color
-        # draw_line_with_color(win, start, end, color)
-        
-        # # Draw bottom wall
-        # start, end = Point(self.x1, self.y2), Point(self.x2, self.y2)
-        # color = wall_color if self.has_bottom_wall else background_color
-        # draw_line_with_color(win, start, end , color)
-
         left_wall_color = wall_color if self.has_left_wall else background_color
         win.draw_line(Line(Point(self.x1, self.y1), Point(self.x1, self.y2)), fill_color = left_wall_color)
         

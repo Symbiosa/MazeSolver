@@ -8,12 +8,14 @@ class Maze:
         self.num_cols = num_cols
         self.padding = padding
         self.seed = seed
-        if self.seed != None:
+        if self.seed is not None:
             self.seed = random.seed(seed)
         self._cells = self._create_cells()
         self._draw_all_cells()
         self._break_entrance_and_exit()
-        self._break_walls_r(self.num_rows, self.num_cols)
+
+    def start_maze(self):
+        self._break_walls_r(0,0)
 
     def _draw_all_cells(self):
         for row in self._cells:
@@ -53,7 +55,10 @@ class Maze:
     def _break_walls_r(self, i, j):
         current = self._cells[i][j]
         current.visited = True
-        
+        print(f"Visiting cell: ({i}, {j})")  # Debug statement
+        if i < 0 or i >= self.num_rows or j < 0 or j >= self.num_cols:
+            print(f"Out of bounds: ({i}, {j})")  # Debug statement
+            return
         while True:
             possible_directions = []
             
@@ -72,4 +77,11 @@ class Maze:
             
             next_i, next_j = random.choice(possible_directions)
             
+            if next_i == i-1:
+                current.has_top_wall = False
+                self._cells[next_i][next_j].has_bottom_wall = False
+            elif next_i == i+1:
+                current.has_bottom_wall = False
+                self._cells[next_i][next_j].has_top_wall = False
+
             self._break_walls_r(next_i, next_j)
