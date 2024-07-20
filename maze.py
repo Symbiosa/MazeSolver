@@ -120,7 +120,7 @@ class Maze:
         
     def solve(self):
         start_i, start_j = 0, 0
-        end_i, end_j = len(self._cells - 1), len(self._cells[0] -1)
+        end_i, end_j = len(self._cells) - 1, len(self._cells[0]) - 1
         
         self._end_cell_i = end_i
         self._end_cell_j = end_j
