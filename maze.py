@@ -150,6 +150,7 @@ class Maze:
     def _solve_r(self,i,j):
         self._cells[i][j].visited = True
         self._animate()
+        
         if (i, j) == (self._end_cell_i, self._end_cell_j):
             return True
         
@@ -158,7 +159,7 @@ class Maze:
         for di, dj in directions:
             ni, nj = i + di, j+ dj
         
-            if 0 <= ni < len(self._cells) and 0 <= nj < len(self._cells[0]) and not self._cells[ni]:
+            if 0 <= ni < len(self._cells) and 0 <= nj < len(self._cells[0]) and not self._cells[ni][nj].visited:
                 
                 if self.can_move(i, j, ni, nj):
                     
