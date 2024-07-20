@@ -127,6 +127,18 @@ class Maze:
         
         return self._solve_r(start_i, start_j)  
     
+    def can_move(self, i, j, ni, nj):
+        # Determine the direction of the move
+        if ni == i - 1 and nj == j:  # Move up
+            return not self._cells[i][j].walls['up'] and not self._cells[ni][nj].walls['down']
+        elif ni == i + 1 and nj == j:  # Move down
+            return not self._cells[i][j].walls['down'] and not self._cells[ni][nj].walls['up']
+        elif ni == i and nj == j - 1:  # Move left
+            return not self._cells[i][j].walls['left'] and not self._cells[ni][nj].walls['right']
+        elif ni == i and nj == j + 1:  # Move right
+            return not self._cells[i][j].walls['right'] and not self._cells[ni][nj].walls['left']
+        return False
+    
     def draw_move(self, i, j, ni, nj):
     # Imagine some logic to draw or log the move from (i, j) to (ni, nj)
         print(f"Moving from ({i}, {j}) to ({ni}, {nj})")
