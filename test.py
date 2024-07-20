@@ -1,15 +1,13 @@
 import unittest
+import random
 from maze import Maze
-from graphics import Window
-from cell import Cell
+
 
 class Tests(unittest.TestCase):
     def test_maze_create_cells(self):
-        win = Window(800,600)
-        x1, y1 = 50,50
-        num_rows, num_cols = 10,10
-        cell_size_x, cell_size_y = 40,40
-        m1 = Maze(x1,y1, num_rows, num_cols, cell_size_x, cell_size_y, win)
+        num_cols = 12
+        num_rows = 10
+        m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
         self.assertEqual(
             len(m1._cells),
             num_cols,
@@ -18,16 +16,34 @@ class Tests(unittest.TestCase):
             len(m1._cells[0]),
             num_rows,
         )
-        
+
+    def test_maze_break_entrance_and_exit(self):
+        num_cols = 12
+        num_rows = 10
+        m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
+        self.assertEqual(
+            m1._cells[0][0].has_top_wall,
+            False,
+        )
+        self.assertEqual(
+            m1._cells[num_cols - 1][num_rows - 1].has_bottom_wall,
+            False,
+        )
+
+    def test_maze_visited(self):
+        num_cols = 10
+        num_rows = 10
+        random_number = random.randint(0,10)
+        m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
+        m1._reset_cells_visited()
+        self.assertEqual(
+            m1._cells[4][4].visited,
+            False,
+        )
+        self.assertEqual(
+            m1._cells[random_number][random_number].visited,
+            False,
+        )
+
 if __name__ == "__main__":
     unittest.main()
-    
-# win = Window(800,600)
-# x1, y1 = 50,50
-# num_rows, num_cols = 13,7
-# cell_size_x, cell_size_y = 40,40
-
-# maze = Maze(x1,y1, num_rows, num_cols, cell_size_x, cell_size_y, win)
-# maze._create_cells()
-
-# win.wait_for_close()
