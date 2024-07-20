@@ -33,9 +33,11 @@ class Tests(unittest.TestCase):
     def test_maze_visited(self):
         num_cols = 10
         num_rows = 10
-        random_number = random.randint(0,10)
+    # Initialize the Maze
         m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
         m1._reset_cells_visited()
+    
+    # Confirm every cell in the maze has been reset
         for row in range(num_rows):
             for col in range(num_cols):
                 self.assertEqual(
@@ -43,14 +45,13 @@ class Tests(unittest.TestCase):
                     False,
                     f"Cell at ({row}, {col}) was not reset"
             )
-        self.assertEqual(
-            m1._cells[4][4].visited,
-            False,
-        )
+
+# And optionally add the specific cell check with a random number
+        random_number = random.randint(0, num_rows - 1)
         self.assertEqual(
             m1._cells[random_number][random_number].visited,
             False,
-        )
+)
 
 if __name__ == "__main__":
     unittest.main()
