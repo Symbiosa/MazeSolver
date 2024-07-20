@@ -39,7 +39,6 @@ def main():
     cell_size_x, cell_size_y = 40,40
     
     maze = Maze(x1,y1, num_rows, num_cols, cell_size_x, cell_size_y, win)
-    maze._create_cells()
     
     win.wait_for_close()
 

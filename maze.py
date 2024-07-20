@@ -22,6 +22,7 @@ class Maze:
         self._cells = []
         self.win = win
         self._create_cells()
+        self._break_entrance_and_exit()
         
     def _create_cells(self):
         self._cells = [] #New list to hold the matrix
@@ -41,7 +42,6 @@ class Maze:
         for col in range(self.num_cols):
             for row in range(self.num_rows):
                 self._draw_cell(row,col)
-        self._break_entrance_and_exit()
  
     def _draw_cell(self, i, j):
         x1 = self.x1 + j * self.cell_size_x
