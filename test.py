@@ -46,12 +46,5 @@ class Tests(unittest.TestCase):
                     f"Cell at ({row}, {col}) was not reset"
             )
 
-# And optionally add the specific cell check with a random number
-        random_number = random.randint(0, num_rows - 1)
-        self.assertEqual(
-            m1._cells[random_number][random_number].visited,
-            False,
-)
-
 if __name__ == "__main__":
     unittest.main()
