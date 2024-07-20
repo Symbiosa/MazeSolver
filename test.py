@@ -35,7 +35,7 @@ class Tests(unittest.TestCase):
         num_rows = 10
         random_number = random.randint(0,10)
         m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
-        m1._reset_cells_visited()
+        m1._reset_cells_visited(self)
         self.assertEqual(
             m1._cells[4][4].visited,
             False,
