@@ -2,36 +2,34 @@ from graphics import Line, Point
 
 
 class Cell:
-    def __init__(self, win):
+    def __init__(self,x1, y1, x2, y2):
         self.has_left_wall = True
         self.has_right_wall = True
         self.has_top_wall = True
         self.has_bottom_wall = True
-        self._x1 = None
-        self._x2 = None
-        self._y1 = None
-        self._y2 = None
-        self._win = win
-
-    def draw(self, x1, y1, x2, y2):
-        if self._win is None:
-            return
         self._x1 = x1
         self._x2 = x2
         self._y1 = y1
         self._y2 = y2
-        if self.has_left_wall:
-            line = Line(Point(x1, y1), Point(x1, y2))
-            self._win.draw_line(line)
-        if self.has_top_wall:
-            line = Line(Point(x1, y1), Point(x2, y1))
-            self._win.draw_line(line)
-        if self.has_right_wall:
-            line = Line(Point(x2, y1), Point(x2, y2))
-            self._win.draw_line(line)
-        if self.has_bottom_wall:
-            line = Line(Point(x1, y2), Point(x2, y2,))
-            self._win.draw_line(line)
+
+    def draw(self, win):
+        if win is None:
+            return
+        wall_color = "black"
+        background_color = "white"
+        
+        
+        left_wall_color = wall_color if self.has_left_wall else background_color
+        self._win.draw_line(Line(Point(self.x1, self.y1), Point(self.x1, self.y2)), color = left_wall_color)
+        
+        top_wall_color = wall_color if self.has_top_wall else background_color
+        self._win.draw_line(Line(Point(self.x1, self.y1), Point(self.x2, self.y1)), color = top_wall_color)
+        
+        right_wall_color = wall_color if self.has_right_wall else background_color
+        self._win.draw_line(Line(Point(self.x2, self.y1), Point(self.x2, self.y2)), color = right_wall_color)
+        
+        bottom_wall_color = wall_color if self.has_bottom_wall else background_color
+        self._win.draw_line(Line(Point(self.x1, self.y2), Point(self.x2, self.y2)), color = bottom_wall_color)
 
     def draw_move(self, to_cell, undo=False):
         half_length = abs(self._x2 - self._x1) // 2
