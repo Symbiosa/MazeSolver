@@ -34,11 +34,9 @@ from maze import Maze
 
 def main():
     win = Window(800,600)
-    x1, y1 = 50,50
     num_rows, num_cols = 13,7
-    cell_size_x, cell_size_y = 40,40
     
-    maze = Maze(x1,y1, num_rows, num_cols, cell_size_x, cell_size_y, win)
+    maze = Maze(num_rows, num_cols, win)
     
     win.wait_for_close()
 
