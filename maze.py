@@ -1,97 +1,113 @@
 from cell import Cell
 import random
+import time
+
 
 class Maze:
-    def __init__(self, win, num_rows, num_cols, seed = None, padding = 10):
-        self.win = win
-        self.num_rows = num_rows
-        self.num_cols = num_cols
-        self.padding = padding
-        self.seed = seed
-        if self.seed is not None:
-            self.seed = random.seed(seed)
-        self._cells = self._create_cells()
-        self._draw_all_cells()
+    def __init__(
+        self,
+        x1,
+        y1,
+        num_rows,
+        num_cols,
+        cell_size_x,
+        cell_size_y,
+        win=None,
+        seed=None,
+    ):
+        self._cells = []
+        self._x1 = x1
+        self._y1 = y1
+        self._num_rows = num_rows
+        self._num_cols = num_cols
+        self._cell_size_x = cell_size_x
+        self._cell_size_y = cell_size_y
+        self._win = win
+        if seed:
+            random.seed(seed)
+
+        self._create_cells()
         self._break_entrance_and_exit()
+        self._break_walls_r(0, 0)
 
-    def start_maze(self):
-        self._break_walls_r(0,0)
-
-    def _draw_all_cells(self):
-        for row in self._cells:
-            for cell in row:
-                cell.draw(self.win)
-    
     def _create_cells(self):
-        # Example of creating cells; replace with actual logic.
-        cells = []
-        for row in range(self.num_rows):
-            row_cells = []
-            for col in range(self.num_cols):
-                # Placeholder for coordinates; replace with actual values.
-                x1, y1, x2, y2 = self.calculate_cell_coordinates(row, col) 
-                cell = Cell(x1, y1, x2, y2)
-                row_cells.append(cell)
-            cells.append(row_cells)
-        return cells
-    
-    def calculate_cell_coordinates(self, row, col):
-        # Method to calculate x1, y1, x2, y2 for given row and col
-        cell_width = 20  # example width, replace as needed
-        cell_height = 20  # example height, replace as needed
-        x1 = col * cell_width + self.padding
-        y1 = row * cell_height + self.padding
-        x2 = x1 + cell_width
-        y2 = y1 + cell_height
-        return x1, y1, x2, y2
-    
+        for i in range(self._num_cols):
+            col_cells = []
+            for j in range(self._num_rows):
+                col_cells.append(Cell(self._win))
+            self._cells.append(col_cells)
+        for i in range(self._num_cols):
+            for j in range(self._num_rows):
+                self._draw_cell(i, j)
+
+    def _draw_cell(self, i, j):
+        if self._win is None:
+            return
+        x1 = self._x1 + i * self._cell_size_x
+        y1 = self._y1 + j * self._cell_size_y
+        x2 = x1 + self._cell_size_x
+        y2 = y1 + self._cell_size_y
+        self._cells[i][j].draw(x1, y1, x2, y2)
+        self._animate()
+
+    def _animate(self):
+        if self._win is None:
+            return
+        self._win.redraw()
+        time.sleep(0.05)
+
     def _break_entrance_and_exit(self):
         self._cells[0][0].has_top_wall = False
-        self._cells[0][0].draw(self.win)
-        
-        self._cells[-1][-1].has_bottom_wall = False
-        self._cells[-1][-1].draw(self.win)
-    
+        self._draw_cell(0, 0)
+        self._cells[self._num_cols - 1][self._num_rows - 1].has_bottom_wall = False
+        self._draw_cell(self._num_cols - 1, self._num_rows - 1)
+
     def _break_walls_r(self, i, j):
-        current = self._cells[i][j]
-        current.visited = True
-        print(f"Visiting cell: ({i}, {j})")  # Debug statement
-        if i < 0 or i >= self.num_rows or j < 0 or j >= self.num_cols:
-            print(f"Out of bounds: ({i}, {j})")  # Debug statement
-            return
-        
+        self._cells[i][j].visited = True
         while True:
-            possible_directions = []
-            
-            if i > 0 and not self._cells[i-1][j].visited:
-                possible_directions.append((i-1,j))
-            if i < self.num_rows - 1 and not self._cells[i+1][j].visited:
-                possible_directions.append((i+1,j))
-            if j > 0 and not self._cells[i][j-1].visited:
-                possible_directions.append((i,j-1))
-            if j < self.num_cols -1 and not self._cells[i][j+1].visited:
-                possible_directions.append((i,j+1))
-            
-            if not possible_directions:
+            next_index_list = []
+
+            # determine which cell(s) to visit next
+            # left
+            if i > 0 and not self._cells[i - 1][j].visited:
+                next_index_list.append((i - 1, j))
+            # right
+            if i < self._num_cols - 1 and not self._cells[i + 1][j].visited:
+                next_index_list.append((i + 1, j))
+            # up
+            if j > 0 and not self._cells[i][j - 1].visited:
+                next_index_list.append((i, j - 1))
+            # down
+            if j < self._num_rows - 1 and not self._cells[i][j + 1].visited:
+                next_index_list.append((i, j + 1))
+
+            # if there is nowhere to go from here
+            # just break out
+            if len(next_index_list) == 0:
+                self._draw_cell(i, j)
                 return
-            
-            
-            next_i, next_j = random.choice(possible_directions)
-            
-            if next_i == i-1:
-                current.has_top_wall = False
-                self._cells[next_i][next_j].has_bottom_wall = False
-            elif next_i == i+1:
-                current.has_bottom_wall = False
-                self._cells[next_i][next_j].has_top_wall = False
-            elif next_j == j-1:
-                current.has_left_wall = False
-                self._cells[next_i][next_j].has_right_wall = False
-            elif next_j == j+1:
-                current.has_right_wall = False
-                self._cells[next_i][next_j].has_left_wall = False
-            
-            self._draw_cell(current)
-            self._draw_cell(self._cells[next_i][next_j])
-                
-            self._break_walls_r(next_i, next_j)
+
+            # randomly choose the next direction to go
+            direction_index = random.randrange(len(next_index_list))
+            next_index = next_index_list[direction_index]
+
+            # knock out walls between this cell and the next cell(s)
+            # right
+            if next_index[0] == i + 1:
+                self._cells[i][j].has_right_wall = False
+                self._cells[i + 1][j].has_left_wall = False
+            # left
+            if next_index[0] == i - 1:
+                self._cells[i][j].has_left_wall = False
+                self._cells[i - 1][j].has_right_wall = False
+            # down
+            if next_index[1] == j + 1:
+                self._cells[i][j].has_bottom_wall = False
+                self._cells[i][j + 1].has_top_wall = False
+            # up
+            if next_index[1] == j - 1:
+                self._cells[i][j].has_top_wall = False
+                self._cells[i][j - 1].has_bottom_wall = False
+
+            # recursively visit the next cell
+            self._break_walls_r(next_index[0], next_index[1])
