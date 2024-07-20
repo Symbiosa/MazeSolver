@@ -35,7 +35,14 @@ class Tests(unittest.TestCase):
         num_rows = 10
         random_number = random.randint(0,10)
         m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
-        m1._reset_cells_visited(self)
+        m1._reset_cells_visited()
+        for row in range(num_rows):
+            for col in range(num_cols):
+                self.assertEqual(
+                    m1._cells[row][col].visited,
+                    False,
+                    f"Cell at ({row}, {col}) was not reset"
+            )
         self.assertEqual(
             m1._cells[4][4].visited,
             False,
